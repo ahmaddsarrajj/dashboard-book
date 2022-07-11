@@ -17,20 +17,15 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
-  USER_UPDATE_PROFILE_RESET
 } from "../Constants/UserContants";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 // LOGIN
-export const login = (name, password) => async (dispatch) => {
-  const ToastObjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-  };
+export const login = (email, password) => async (dispatch) => {
+  
+  console.log("login")
   try {
+    console.log("login successfully")
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const config = {
@@ -40,19 +35,12 @@ export const login = (name, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `/api/users/login`,
-      { name, password },
+      `/auth/signin`,
+      { email, password },
       config
     );
 
-    if (!data.isAdmin === true) {
-      toast.error("You are not Admin", ToastObjects);
-      dispatch({
-        type: USER_LOGIN_FAIL,
-      });
-    } else {
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    }
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -92,7 +80,7 @@ export const listUser = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/users`, config);
+    const { data } = await axios.get(`/users/all`, config);
 
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -112,7 +100,7 @@ export const listUser = () => async (dispatch, getState) => {
 
 
 // REGISTER
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
 
@@ -123,8 +111,8 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `/api/users/register`,
-      { name, email, password },
+      `/auth/signup`,
+      { email, password },
       config
     );
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });

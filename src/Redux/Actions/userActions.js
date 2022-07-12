@@ -67,6 +67,7 @@ export const logout = () => (dispatch) => {
 
 // ALL USER
 export const listUser = () => async (dispatch, getState) => {
+  console.log('user');
   try {
     dispatch({ type: USER_LIST_REQUEST });
 
@@ -80,7 +81,7 @@ export const listUser = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/users/all`, config);
+    const { data } = await axios.get(`/users/all`);
 
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
   } catch (error) {

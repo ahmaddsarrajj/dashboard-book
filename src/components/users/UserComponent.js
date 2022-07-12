@@ -7,10 +7,13 @@ import Message from "../LoadingError/Error";
 import { logout } from "../../Redux/Actions/userActions";
 
 const UserComponent = () => {
+
   const dispatch = useDispatch();
+  
   const logoutHandler = () => {
     dispatch(logout());
   };
+  
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
